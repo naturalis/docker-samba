@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  samba:
+    image: dperson/samba
+    environment:
+      TZ: 'Europe/Amsterdam'
+    networks:
+      - default
+    read_only: false
+    tmpfs:
+      - /tmp
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    volumes:
+      - /data:/data:z
+    command: '-s "Mount;/data"'
+
+networks:
+  default:
