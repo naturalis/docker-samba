@@ -5,6 +5,12 @@ services:
     image: dperson/samba
     environment:
       TZ: 'Europe/Amsterdam'
+      USER: '${SMB_USER};${SMB_PASSWORD}'
+      SHARE: '${SMB_SHARE};/data;yes;no;no;;;;data share'
+      WORKGROUP: '${SMB_WORKGROUP}'
+    ports:
+        - "139:139"
+        - "445:445"
     networks:
       - default
     read_only: false
@@ -14,8 +20,8 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - /data:/data:z
-    command: '-s "Mount;/data"'
+      - /data:/data
+    command: "-S -r"
 
 networks:
   default:
