@@ -63,8 +63,8 @@ LEVEL2_OPLOCKS=${LEVEL2_OPLOCKS:-no}
 KERNEL_OPLOCKS=${KERNEL_OPLOCKS:-yes}
 MAX_XMIT=${MAX_XMIT:-65535}
 DEAD_TIME=${DEAD_TIME:-15}
-SHARE_COMMENT=${SHARE_COMMENT:-Groups}
-
+SHARE_COMMENT=${SHARE_COMMENT:-Groups Share}
+SHARE_NAME=${SHARE_NAME:-Groups}
 SAMBA_CONF=/etc/samba/smb.conf
 
 echo --------------------------------------------------
@@ -244,17 +244,17 @@ crudini --set $SAMBA_CONF global "winbind offline logon" "true"
 # data shared directory (restricted)
 mkdir -p "/data" && chmod 777 "/data"
 
-crudini --set $SAMBA_CONF private "comment" "$SHARE_COMMENT"
-crudini --set $SAMBA_CONF private "path" "/data/"
-crudini --set $SAMBA_CONF private "public" "yes"
-crudini --set $SAMBA_CONF private "guest ok" "no"
-crudini --set $SAMBA_CONF private "read only" "no"
-crudini --set $SAMBA_CONF private "writeable" "yes"
-crudini --set $SAMBA_CONF private "create mask" "0774"
-crudini --set $SAMBA_CONF private "directory mask" "0777"
-crudini --set $SAMBA_CONF private "browseable" "yes"
-crudini --set $SAMBA_CONF private "printable" "no"
-crudini --set $SAMBA_CONF private "oplocks" "yes"
+crudini --set $SAMBA_CONF $SHARE_NAME "comment" "$SHARE_COMMENT"
+crudini --set $SAMBA_CONF $SHARE_NAME "path" "/data/"
+crudini --set $SAMBA_CONF $SHARE_NAME "public" "yes"
+crudini --set $SAMBA_CONF $SHARE_NAME "guest ok" "no"
+crudini --set $SAMBA_CONF $SHARE_NAME "read only" "no"
+crudini --set $SAMBA_CONF $SHARE_NAME "writeable" "yes"
+crudini --set $SAMBA_CONF $SHARE_NAME "create mask" "0774"
+crudini --set $SAMBA_CONF $SHARE_NAME "directory mask" "0777"
+crudini --set $SAMBA_CONF $SHARE_NAME "browseable" "yes"
+crudini --set $SAMBA_CONF $SHARE_NAME "printable" "no"
+crudini --set $SAMBA_CONF $SHARE_NAME "oplocks" "yes"
 
 echo --------------------------------------------------
 echo "Updating NSSwitch configuration: \"/etc/nsswitch.conf\""
