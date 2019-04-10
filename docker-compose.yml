@@ -2,26 +2,27 @@ version: '3'
 
 services:
   samba:
-    image: dperson/samba
-    environment:
-      TZ: 'Europe/Amsterdam'
-      USER: '${SMB_USER};${SMB_PASSWORD}'
-      SHARE: '${SMB_SHARE};/data;yes;no;no;;;;data share'
-      WORKGROUP: '${SMB_WORKGROUP}'
+    image: naturalis/samba-join-ad:0.0.1
+    hostname: ${SMB_HOSTNAME}
+    extra_hosts:
+      - "${SMB_HOSTNAME}:${SMB_IP}"
     ports:
+        - "137:137/udp"
+        - "138:138/udp"
         - "139:139"
         - "445:445"
     networks:
       - default
-    read_only: false
-    tmpfs:
-      - /tmp
     restart: unless-stopped
-    stdin_open: true
-    tty: true
     volumes:
       - /data:/data
-    command: "-S -r"
+    env_file:
+      .env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: '10m'
+        max-file: '5'
 
 networks:
   default:
