@@ -6,6 +6,12 @@ services:
     hostname: ${SMB_HOSTNAME}
     extra_hosts:
       - "${SMB_HOSTNAME}:${SMB_IP}"
+      - "${AD_SHORTNAME} ${AD_NAME}:${AD_IP1}"
+      - "${AD_SHORTNAME} ${AD_NAME}:${AD_IP2}"
+    dns:
+      - ${AD_IP1}
+      - ${AD_IP2}
+    dns_search: ${AD_NAME}
     ports:
         - "137:137/udp"
         - "138:138/udp"

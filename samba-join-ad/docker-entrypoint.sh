@@ -66,6 +66,9 @@ DEAD_TIME=${DEAD_TIME:-15}
 SHARE_COMMENT=${SHARE_COMMENT:-Groups Share}
 SHARE_NAME=${SHARE_NAME:-Groups}
 SAMBA_CONF=/etc/samba/smb.conf
+ALLOW_DNS_UPDATES=${ALLOW_DNS_UPDATES:-disabled}
+ADS_JOIN_OPTION=${ADS_JOIN_OPTION:---no-dns-updates}
+
 
 echo --------------------------------------------------
 echo "Backing up current smb.conf"
@@ -134,6 +137,7 @@ echo --------------------------------------------------
 crudini --set $SAMBA_CONF global "vfs objects" "acl_xattr"
 crudini --set $SAMBA_CONF global "map acl inherit" "yes"
 crudini --set $SAMBA_CONF global "store dos attributes" "yes"
+crudini --set $SAMBA_CONF global "allow dns updates" "$ALLOW_DNS_UPDATES"
 
 crudini --set $SAMBA_CONF global "workgroup" "$WORKGROUP"
 crudini --set $SAMBA_CONF global "server string" "$SERVER_STRING"
@@ -279,7 +283,7 @@ echo $AD_PASSWORD | kinit -V $AD_USERNAME@$REALM
 echo --------------------------------------------------
 echo 'Registering to Active Directory'
 echo --------------------------------------------------
-net ads join -U"$AD_USERNAME"%"$AD_PASSWORD"
+net ads join -U"$AD_USERNAME"%"$AD_PASSWORD" $ADS_JOIN_OPTION
 #wbinfo --online-status
 
 echo --------------------------------------------------
